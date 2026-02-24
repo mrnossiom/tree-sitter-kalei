@@ -1,0 +1,38 @@
+{
+  "$schema": "https://tree-sitter.github.io/tree-sitter/assets/schemas/config.schema.json",
+  "grammars": [
+    {
+      "name": "kalei",
+      "camelcase": "Kalei",
+      "title": "Kalei",
+      "scope": "source.kalei",
+      "file-types": [
+        "kl"
+      ],
+      "injection-regex": "^kalei$",
+      "class-name": "TreeSitterKalei"
+    }
+  ],
+  "metadata": {
+    "version": "0.1.0",
+    "license": "MIT",
+    "description": "Kalei grammar for tree-sitter",
+    "authors": [
+      {
+        "name": "Milo Moisson <milo@wiro.world>"
+      }
+    ],
+    "links": {
+      "repository": "https://github.com/mrnossiom/tree-sitter-kalei"
+    }
+  },
+  "bindings": {
+    "c": true,
+    "go": true,
+    "node": true,
+    "python": true,
+    "rust": true,
+    "swift": true,
+    "zig": false
+  }
+}
