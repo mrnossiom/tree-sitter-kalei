@@ -10,7 +10,8 @@
         "kl"
       ],
       "injection-regex": "^kalei$",
-      "class-name": "TreeSitterKalei"
+      "class-name": "TreeSitterKalei",
+      "highlights": "queries/highlights.scm"
     }
   ],
   "metadata": {
