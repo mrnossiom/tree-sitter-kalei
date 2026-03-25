@@ -347,10 +347,10 @@ module.exports = grammar({
 
     float_literal: $ => /[0-9]+\.[0-9]+/,
 
-    comment: $ => choice(
+    comment: $ => token(choice(
       seq("//", /[^\n]*/),
       seq("/*", /[^*]*\*+([^/*][^*]*\*+)*/, "/")
-    ),
+    )),
   }
 });
 
