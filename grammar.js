@@ -268,6 +268,7 @@ module.exports = grammar({
     )),
 
     binary_expr: $ => {
+      /** @type {[number, RuleOrLiteral][]} */
       const table = [
         [PREC.multiplicative, choice("*", "/", "%")],
         [PREC.additive, choice("+", "-")],
