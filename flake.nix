@@ -15,6 +15,8 @@
       ];
       forAllPkgs = function: forAllSystems (system: function pkgs.${system});
 
+      manifest = builtins.fromJSON (builtins.readFile ./tree-sitter.json);
+
       pkgs = forAllSystems (
         system:
         import nixpkgs {
@@ -25,6 +27,17 @@
     in
     {
       formatter = forAllPkgs (pkgs: pkgs.nixfmt-tree);
+
+      packages = forAllPkgs (pkgs: rec {
+        default = tree-sitter-kalei;
+        tree-sitter-kalei = pkgs.tree-sitter.buildGrammar {
+          language = "kalei";
+          version = manifest.metadata.version;
+          src = ./.;
+
+          generate = true;
+        };
+      });
 
       devShells = forAllPkgs (pkgs: {
         default = pkgs.mkShell {
