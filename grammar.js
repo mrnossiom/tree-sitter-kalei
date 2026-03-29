@@ -36,12 +36,20 @@ module.exports = grammar({
 
   conflicts: $ => [
     [$.path_segment],
+    [$.expr],
   ],
 
   rules: {
     source_file: $ => seq(
       repeat($.attribute_parent),
-      repeat($.item)
+      repeat(
+        choice(
+          $.item,
+          // HACK: this doesn't follow the current grammar
+          // but allows better highlighting for quick snippets
+          $.stmt,
+        ),
+      ),
     ),
 
     item: $ => seq(
@@ -57,17 +65,17 @@ module.exports = grammar({
       )
     ),
 
-    attribute_parent: $ => seq(
+    attribute_parent: $ => prec.left(1, seq(
       "##",
       $.path,
       optional($.attribute_meta)
-    ),
+    )),
 
-    attribute_next: $ => seq(
+    attribute_next: $ => prec.left(1, seq(
       "#",
       $.path,
       optional($.attribute_meta)
-    ),
+    )),
 
     attribute_meta: $ => choice(
       seq("(", sepBy(",", $.expr), ")"),
@@ -242,13 +250,16 @@ module.exports = grammar({
 
     expr_ret_stmt: $ => prec(0, $.expr),
 
-    expr: $ => choice(
-      $.binary_expr,
-      $.assignment_expr,
-      $.short_circuit_expr,
-      $.unary_expr,
-      $.postfix_expr,
-      $.primary_expr
+    expr: $ => seq(
+      repeat($.attribute_next),
+      choice(
+        $.binary_expr,
+        $.assignment_expr,
+        $.short_circuit_expr,
+        $.unary_expr,
+        $.postfix_expr,
+        $.primary_expr
+      ),
     ),
 
     unary_expr: $ => prec(PREC.unary, choice(
