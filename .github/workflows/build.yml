@@ -1,0 +1,52 @@
+name: Build and Push Grammar
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+# Manual setup instructions for the 'grammar' branch:
+# git checkout --orphan grammar
+# git rm -rf .
+# git commit --allow-empty -m "initial commit"
+# git push origin grammar
+# git checkout main
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v6
+        with:
+          path: source
+
+      - name: Checkout grammar branch
+        uses: actions/checkout@v6
+        with:
+          ref: grammar
+          path: grammar
+
+      - uses: cachix/install-nix-action@v27
+
+      - name: Generate parser
+        working-directory: source
+        run: nix shell .#tree-sitter --command tree-sitter generate
+
+      - name: Deploy to grammar branch
+        working-directory: grammar
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+          # make a clean commit with the freshly built src
+          git rm -rf --ignore-unmatch .
+          cp -r ../source/src .
+          cp -r ../source/bindings .
+          git add src bindings
+
+          git commit --allow-empty -m "build: ${{ github.sha }}"
+          git push

@@ -37,6 +37,9 @@
 
           generate = true;
         };
+
+        # use this version in CI
+        tree-sitter = pkgs.tree-sitter;
       });
 
       devShells = forAllPkgs (pkgs: {
