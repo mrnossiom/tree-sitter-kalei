@@ -55,6 +55,8 @@ module.exports = grammar({
     item: $ => seq(
       repeat($.attribute_next),
       choice(
+        $.import,
+        $.module_definition,
         $.function_definition,
         $.unsafe_extern_block,
         $.struct_definition,
@@ -81,6 +83,36 @@ module.exports = grammar({
       seq("(", sepBy(",", $.expr), ")"),
       seq("{", sepBy(",", $.expr), "}"),
       seq("[", sepBy(",", $.expr), "]")
+    ),
+
+    import: $ => seq(
+      "use",
+      $.import_path,
+    ),
+
+    import_path: $ => seq(
+      $.identifier,
+      optional(seq(
+        "::",
+        choice(
+          $.import_path,
+          $.import_path_end,
+        )
+      )),
+    ),
+
+    import_path_end: $ => choice(
+      seq("{", sepBy(",", $.import_path), "}"),
+      "*",
+    ),
+
+    module_definition: $ => seq(
+      "mod",
+      field("name", $.identifier),
+      choice(
+        ";",
+        seq("{", repeat($.item), "}")
+      )
     ),
 
     function_definition: $ => seq(

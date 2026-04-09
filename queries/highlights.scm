@@ -20,6 +20,7 @@
   "trait"
   "type"
   "unsafe"
+  "use"
   "while"
 ] @keyword
 
