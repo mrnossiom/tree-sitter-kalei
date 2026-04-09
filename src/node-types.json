@@ -1192,6 +1192,10 @@
     "named": false
   },
   {
+    "type": "def",
+    "named": false
+  },
+  {
     "type": "else",
     "named": false
   },
@@ -1206,10 +1210,6 @@
   {
     "type": "float_literal",
     "named": true
-  },
-  {
-    "type": "fn",
-    "named": false
   },
   {
     "type": "for",
