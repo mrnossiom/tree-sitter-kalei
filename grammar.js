@@ -84,7 +84,7 @@ module.exports = grammar({
     ),
 
     function_definition: $ => seq(
-      "fn",
+      "def",
       field("name", $.identifier),
       optional($.generics),
       $.fn_decl,
