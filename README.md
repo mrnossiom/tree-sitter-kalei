@@ -24,3 +24,10 @@ source = { git = "https://github.com/mrnossiom/tree-sitter-kalei", rev = "gramma
 ```
 
 Don't forget to run `hx --grammar fetch` and `hx --grammar fetch`.
+
+Also copy the required queries.
+
+```sh
+mkdir -p ~/.config/helix/runtime/queries/kalei
+cp -iv queries/highlights.scm ~/.config/helix/runtime/queries/kalei/
+```
